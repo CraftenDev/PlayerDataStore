@@ -24,13 +24,30 @@ Complete javadoc can be found [here](http://craftendev.github.io/PlayerDataStore
 started:
 
 ```java
-PlayerDataStoreService storeService = Bukkit.getServer().getServicesManager()
+PlayerDataStoreService service = Bukkit.getServer().getServicesManager()
                                       .getRegistration(PlayerDataStoreService.class).getProvider();
-PlayerDataStore store = storeService.getStore(somePlayer); // either a Player, an OfflinePlayer or a UUID
+PlayerDataStore store = service.getStore(somePlayer); // either a Player, an OfflinePlayer or a UUID
 store.put("foo", "bar");
 store.get("foo"); // "bar"
 store.clear();
 store.get("foo"); // null
+```
+
+### Usage with Maven
+If you use Maven, you can pull the dependency from our repository.
+```xml
+<repository>
+  <id>wertarbyte-repo</id>
+  <url>https://nexus.wertarbyte.com/content/groups/public/</url>
+</repository>
+```
+
+```xml
+<dependency>
+  <artifactId>playerdatastore-api</artifactId>
+  <groupId>de.craften.plugins.playerdatastore</groupId>
+  <version>1.0.0</version>
+</dependency>
 ```
 
 ## License
