@@ -1,0 +1,4 @@
+name: PlayerDataStorePlugin
+version: VERSION
+main: de.craften.plugins.playerdatastore.plugin.PlayerDataStorePlugin
+author: leMaik
