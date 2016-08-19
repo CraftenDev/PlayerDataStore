@@ -11,7 +11,7 @@
     </modules>
     <groupId>de.craften.plugins.playerdatastore</groupId>
     <artifactId>PlayerDataStore</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <packaging>pom</packaging>
     <properties>
         <jdk.version>1.8</jdk.version>

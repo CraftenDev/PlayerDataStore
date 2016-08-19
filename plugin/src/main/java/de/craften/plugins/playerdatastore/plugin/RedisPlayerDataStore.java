@@ -2,10 +2,12 @@ package de.craften.plugins.playerdatastore.plugin;
 
 import de.craften.plugins.playerdatastore.api.PlayerDataStore;
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.Transaction;
 
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Function;
 
 /**
  * A player data store that uses Redis.
@@ -44,6 +46,20 @@ public class RedisPlayerDataStore implements PlayerDataStore {
     }
 
     @Override
+    public void update(String key, Function<String, String> update) {
+        // locking algorithm inspired by http://stackoverflow.com/a/22378859
+        String lockKey = uuid + ":" + key + ":lock";
+        jedis.watch(lockKey);
+        String oldValue = jedis.hget(uuid, key);
+        String newValue = update.apply(oldValue);
+        Transaction t = jedis.multi();
+        t.set(lockKey, "");
+        t.expire(lockKey, 3);
+        t.hset(uuid, key, newValue);
+        t.exec();
+    }
+
+    @Override
     public String remove(String key) {
         String old = get(key);
         jedis.hdel(uuid, key);
@@ -73,6 +89,11 @@ public class RedisPlayerDataStore implements PlayerDataStore {
     @Override
     public CompletableFuture<Void> putAllAsync(Map<String, String> values) {
         return CompletableFuture.runAsync(() -> putAll(values));
+    }
+
+    @Override
+    public CompletableFuture<Void> updateAsync(String key, Function<String, String> update) {
+        return CompletableFuture.runAsync(() -> update(key, update));
     }
 
     @Override

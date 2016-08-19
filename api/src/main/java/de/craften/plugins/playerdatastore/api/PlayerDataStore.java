@@ -2,6 +2,7 @@ package de.craften.plugins.playerdatastore.api;
 
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Function;
 
 /**
  * A key-value store for player data.
@@ -38,6 +39,14 @@ public interface PlayerDataStore {
      * @param values key-value map
      */
     void putAll(Map<String, String> values);
+
+    /**
+     * Atomically updates the value of the given key.
+     *
+     * @param key    key
+     * @param update update function that gets the old value and returns the new value
+     */
+    void update(String key, Function<String, String> update);
 
     /**
      * Removes the given key and its value.
@@ -102,4 +111,13 @@ public interface PlayerDataStore {
      * @return future that can be used to wait for this action
      */
     CompletableFuture<Void> clearAsync();
+
+    /**
+     * Atomically updates the value of the given key.
+     *
+     * @param key    key
+     * @param update update function that gets the old value and returns the new value
+     * @return future that can be used to wait for this action
+     */
+    CompletableFuture<Void> updateAsync(String key, Function<String, String> update);
 }

@@ -9,8 +9,6 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.*;
 
@@ -72,6 +70,16 @@ public class RedisPlayerDataStoreTest {
         assertEquals("value", store.get("someOtherKey"));
 
         assertEquals(0, secondStore.getAll().size());
+    }
+
+    @Test
+    public void update() throws Exception {
+        store.put("foo", "bar");
+        store.update("foo", (old) -> {
+            assertEquals("bar", old);
+            return old + "2";
+        });
+        assertEquals("bar2", store.get("foo"));
     }
 
     @Test
