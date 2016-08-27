@@ -8,6 +8,7 @@
     <modules>
         <module>api</module>
         <module>plugin</module>
+        <module>debug-plugin</module>
     </modules>
     <groupId>de.craften.plugins.playerdatastore</groupId>
     <artifactId>PlayerDataStore</artifactId>

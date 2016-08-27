@@ -1,0 +1,4 @@
+name: PlayerDataStore-Debug
+version: VERSION
+main: de.craften.plugins.playerdatastore.plugin.debug.PlayerDataStoreDebugPlugin
+author: leMaik
