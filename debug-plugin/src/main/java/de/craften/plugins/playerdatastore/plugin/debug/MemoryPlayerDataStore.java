@@ -21,7 +21,9 @@ public class MemoryPlayerDataStore implements PlayerDataStore {
     public MemoryPlayerDataStore(ConfigurationSection section, UUID uuid) {
         this.section = section;
         this.uuid = uuid.toString();
-        section.set(this.uuid, new MemoryConfiguration());
+        if (!section.contains(this.uuid)) {
+            section.set(this.uuid, new MemoryConfiguration());
+        }
     }
 
     @Override
