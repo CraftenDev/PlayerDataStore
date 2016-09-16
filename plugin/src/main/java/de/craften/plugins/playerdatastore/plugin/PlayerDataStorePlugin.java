@@ -5,21 +5,22 @@ import de.craften.plugins.playerdatastore.api.PlayerDataStoreService;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
-import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPoolConfig;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.UUID;
 
 public class PlayerDataStorePlugin extends JavaPlugin {
-    private Jedis jedis;
+    private JedisPool jedis;
 
     @Override
     public void onEnable() {
         saveDefaultConfig();
 
         try {
-            jedis = new Jedis(new URI(getConfig().getString("redisUrl")));
+            jedis = new JedisPool(new JedisPoolConfig(), new URI(getConfig().getString("redisUrl")));
         } catch (URISyntaxException e) {
             getLogger().severe("Invalid Redis URI " + getConfig().getString("redisUrl"));
             getServer().getPluginManager().disablePlugin(this);
@@ -43,6 +44,6 @@ public class PlayerDataStorePlugin extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        jedis.disconnect();
+        jedis.destroy();
     }
 }
