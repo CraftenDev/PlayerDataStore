@@ -2,7 +2,7 @@ package de.craften.plugins.playerdatastore.plugin;
 
 import org.junit.Before;
 import org.junit.Test;
-import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -18,8 +18,8 @@ public class RedisPlayerDataStoreTest {
 
     @Before
     public void setup() throws URISyntaxException {
-        store = new RedisPlayerDataStore(new Jedis(new URI("redis://localhost:6379/1")), UUID.randomUUID());
-        secondStore = new RedisPlayerDataStore(new Jedis(new URI("redis://localhost:6379/1")), UUID.randomUUID());
+        store = new RedisPlayerDataStore(new JedisPool(new URI("redis://localhost:6379/1")), UUID.randomUUID());
+        secondStore = new RedisPlayerDataStore(new JedisPool(new URI("redis://localhost:6379/1")), UUID.randomUUID());
     }
 
     @Test
